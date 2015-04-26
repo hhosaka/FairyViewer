@@ -5,26 +5,19 @@ import com.nag.android.util.FlipView;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 public class MainActivity extends Activity implements OnShakeListener ,
-														FlipView.FlipViewListener,
-														TapManager.OnTapListener{
-	private FlipView fairy;
-	private WatchHandView hourhand;
-	private WatchHandView minutehand;
+														TapManager.OnTapListener
+														,Watch{
 	private ShakeManager shakemanager;
 	private TapManager tapmanager;
+	private Fairy fairy;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		fairy = (FlipView)findViewById(R.id.animationViewFairy);
-		fairy.setOnFlipViewListener(this);
-		hourhand = (WatchHandView)findViewById(R.id.imageViewHourHand);
-		minutehand = (WatchHandView)findViewById(R.id.imageViewMinuteHand);
+		fairy = new FairyBlueGuy();
 		shakemanager = new ShakeManager(this);
 		findViewById(R.id.relativeLayoutMain).setOnTouchListener(new TapManager(this));
 	}
@@ -41,24 +34,28 @@ public class MainActivity extends Activity implements OnShakeListener ,
 		shakemanager.pause();
 	}
 
-	private static final int DURATION=3000;
-	private static final int INTERVAL = 124;
-
 	@Override
 	public void onShake() {
-		fairy.reset();
-		hourhand.random(DURATION);
-		minutehand.random(DURATION);
-	}
-
-	@Override
-	public void onFinish() {
-		hourhand.adjust(DURATION);
-		minutehand.adjust(DURATION);
+		fairy.action(this, this, Fairy.FACTOR.SHAKE);
 	}
 
 	@Override
 	public void onTap() {
-		fairy.setSource(R.array.fairy_blueguy_enter, INTERVAL, false);
+		fairy.action(this, this, Fairy.FACTOR.TAP);
+	}
+
+	@Override
+	public WatchHandView getHourHandView() {
+		return (WatchHandView)findViewById(R.id.imageViewHourHand);
+	}
+
+	@Override
+	public WatchHandView getMinuteHandView() {
+		return (WatchHandView)findViewById(R.id.imageViewMinuteHand);
+	}
+
+	@Override
+	public FlipView getFairyHandView() {
+		return (FlipView)findViewById(R.id.animationViewFairy);
 	}
 }

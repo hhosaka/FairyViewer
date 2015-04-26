@@ -7,6 +7,7 @@ import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.text.format.Time;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 abstract class WatchHandView extends ImageView {
@@ -31,11 +32,12 @@ abstract class WatchHandView extends ImageView {
 		move(duration, rand.nextFloat()*720-360.0f);
 	}
 
-	public void adjust(int duration){
+	public void setToNow(int duration){
 		move(duration, getAngle());
 	}
 
 	private void move(int duration, float next) {
+		Log.d("H:", "H:current" + current + " next=" + next);
 		ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(this
 				, PropertyValuesHolder.ofFloat("rotation", current, next));
 		objectAnimator.setDuration(duration);
