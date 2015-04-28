@@ -55,6 +55,7 @@ public class ShakeManager implements SensorEventListener {
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+			checkLevel(event.values[0], event.values[1], event.values[2]);
 			long now = System.currentTimeMillis();
 			if ((now - mLastForce) > SHAKE_TIMEOUT) {
 				mShakeCount = 0;
@@ -107,37 +108,39 @@ public class ShakeManager implements SensorEventListener {
 
 	private void checkLevel(double x, double y, double z) {
 
-		double radian_x = Math.asin(x / 10.0f);
-		double radian_y = Math.asin(y / 10.0f);
+		if(listenerLevel!=null) {
+			double radian_x = Math.asin(x / 10.0f);
+			double radian_y = Math.asin(y / 10.0f);
 
-		x = Math.sin(radian_x);
-		y = Math.sin(radian_y);
+			x = Math.sin(radian_x);
+			y = Math.sin(radian_y);
 
-		double limit_x = Math.abs(Math.cos(radian_y));
-		double limit_y = Math.abs(Math.cos(radian_x));
+			double limit_x = Math.abs(Math.cos(radian_y));
+			double limit_y = Math.abs(Math.cos(radian_x));
 
-		if (-limit_x > x)
-			x = -limit_x;
-		if (limit_x < x)
-			x = limit_x;
-		if (-limit_y > y)
-			y = -limit_y;
-		if (limit_y < y)
-			y = limit_y;
+			if (-limit_x > x)
+				x = -limit_x;
+			if (limit_x < x)
+				x = limit_x;
+			if (-limit_y > y)
+				y = -limit_y;
+			if (limit_y < y)
+				y = limit_y;
 
-		x *= 10.0f;
-		y *= 10.0f;
+			x *= 10.0f;
+			y *= 10.0f;
 
-		double roll = roll_ * 0.9 + x * 0.1;
-		double pitch = pitch_ * 0.9 + y * 0.1;
+			double roll = roll_ * 0.9 + x * 0.1;
+			double pitch = pitch_ * 0.9 + y * 0.1;
 
-		if (!Double.isNaN(roll)) {
-			roll_ = roll;
+			if (!Double.isNaN(roll)) {
+				roll_ = roll;
+			}
+			if (!Double.isNaN(pitch)) {
+				pitch_ = pitch;
+			}
+
+			listenerLevel.OnChangeLevel(roll_, pitch_);
 		}
-		if (!Double.isNaN(pitch)) {
-			pitch_ = pitch;
-		}
-
-		listenerLevel.OnChangeLevel(roll_, pitch_);
 	}
 }
