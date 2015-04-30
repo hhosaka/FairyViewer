@@ -1,26 +1,21 @@
 package com.nag.android.fairyviewer;
 
-import java.util.List;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
-import android.view.Menu;
 
-public class ShakeManager implements SensorEventListener {
+import com.nag.android.util.AngleMeter;
+
+public class ShakeManager implements SensorEventListener, AngleMeter {
 
 	public interface OnShakeListener {
 		void onShake();
 	}
 
-	public interface OnLevelListener{
-		void OnChangeLevel(double roll, double pitch);
+	public interface OnRotationListener {
+		void OnChangeLevel();
 	}
 
 	private static final int FORCE_THRESHOLD = 300;
@@ -29,17 +24,18 @@ public class ShakeManager implements SensorEventListener {
 	private static final int SHAKE_DURATION = 100;
 	private static final int SHAKE_COUNT = 2;
 
-	private SensorManager mSensorManager;
-	private float mLastX = -1.0f, mLastY = -1.0f, mLastZ = -1.0f;
+	private SensorManager sensormanager;
+//	private float mLastX = -1.0f, lasty = -1.0f, lastz = -1.0f;
+    private float[] prev = new float[3];
 	private long mLastTime;
 	private OnShakeListener listener;
 	//private Context mContext;
 	private int mShakeCount = 0;
 	private long mLastShake;
 	private long mLastForce;
-	private OnLevelListener listenerLevel= null;
+	private OnRotationListener listenerLevel= null;
 
-	public void setOnLevelListener(OnLevelListener listener){
+	public void setOnLevelListener(OnRotationListener listener){
 		this.listenerLevel = listener;
 	}
 
@@ -47,100 +43,111 @@ public class ShakeManager implements SensorEventListener {
 		this.listener = listener;
 	}
 
-
 	@Override
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
 	}
 
+    private float sum(float[] values){
+        float ret = 0;
+        for(float value :  values ){
+            ret += value;
+        }
+        return ret;
+    }
+
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-			checkLevel(event.values[0], event.values[1], event.values[2]);
-			long now = System.currentTimeMillis();
-			if ((now - mLastForce) > SHAKE_TIMEOUT) {
-				mShakeCount = 0;
-			}
-			if ((now - mLastTime) > TIME_THRESHOLD) {
-				long diff = now - mLastTime;
-				float speed = Math.abs(event.values[0] +
-						event.values[1] +
-						event.values[2] -
-						mLastX - mLastY - mLastZ) / diff * 10000;
-				if (speed > FORCE_THRESHOLD) {
-					if ((++mShakeCount >= SHAKE_COUNT) && now - mLastShake > SHAKE_DURATION) {
-						mLastShake = now;
-						mShakeCount = 0;
-						if (listener != null) {
-							listener.onShake();
-						}
-					}
-					mLastForce = now;
-				}
-				mLastTime = now;
-				mLastX = event.values[0];
-				mLastY = event.values[1];
-				mLastZ = event.values[2];
-			}
-		}
-	}
+        checkLevel(event);
+        checkShake(event);
+    }
 
-	public void resume(Context context) {
-		mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-		if (mSensorManager == null) {
+    private void checkShake(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            long now = System.currentTimeMillis();
+            if ((now - mLastForce) > SHAKE_TIMEOUT) {
+                mShakeCount = 0;
+            }
+            if ((now - mLastTime) > TIME_THRESHOLD) {
+                long diff = now - mLastTime;
+                float speed = Math.abs(sum(event.values)-sum(prev)) / diff * 10000;
+                if (speed > FORCE_THRESHOLD) {
+                    if ((++mShakeCount >= SHAKE_COUNT) && now - mLastShake > SHAKE_DURATION) {
+                        mLastShake = now;
+                        mShakeCount = 0;
+                        if (listener != null) {
+                            listener.onShake();
+                        }
+                    }
+                    mLastForce = now;
+                }
+                mLastTime = now;
+                prev = event.values.clone();
+            }
+        }
+    }
+
+    public void resume(Context context) {
+		sensormanager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+		if (sensormanager == null) {
 			throw new UnsupportedOperationException("Sensor not suported");
 		}
-		List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
-		if (sensors.size() > 0) {
-			Sensor s = sensors.get(0);
-			mSensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_UI);
-		}
+        sensormanager.registerListener(this, sensormanager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_UI);
+        sensormanager.registerListener(this,sensormanager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),SensorManager.SENSOR_DELAY_UI);
+//		List<Sensor> sensors = sensormanager.getSensorList(Sensor.TYPE_ACCELEROMETER);
+//		if (sensors.size() > 0) {
+//			Sensor s = sensors.get(0);
+//			sensormanager.registerListener(this, s, SensorManager.SENSOR_DELAY_UI);
+//		}
 	}
 
 	public void pause() {
-		if (mSensorManager != null) {
-			mSensorManager.unregisterListener(this);
-			mSensorManager = null;
+		if (sensormanager != null) {
+			sensormanager.unregisterListener(this);
+			sensormanager = null;
 		}
 	}
 
-	private double roll_ = 0;
-	private double pitch_ = 0;
+    float[]geomagnetic = null;
+    float[]gravity = null;
+    float[]attitude = new float[3];
+    float[]rotationMatrix = new float[9];
+    private final static double RAD2DEG = 180/Math.PI;
 
-	private void checkLevel(double x, double y, double z) {
+	private void checkLevel(SensorEvent event) {
 
-		if(listenerLevel!=null) {
-			double radian_x = Math.asin(x / 10.0f);
-			double radian_y = Math.asin(y / 10.0f);
+        switch(event.sensor.getType()){
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                geomagnetic = event.values.clone();
+                break;
+            case Sensor.TYPE_ACCELEROMETER:
+                gravity = event.values.clone();
+                break;
+        }
 
-			x = Math.sin(radian_x);
-			y = Math.sin(radian_y);
-
-			double limit_x = Math.abs(Math.cos(radian_y));
-			double limit_y = Math.abs(Math.cos(radian_x));
-
-			if (-limit_x > x)
-				x = -limit_x;
-			if (limit_x < x)
-				x = limit_x;
-			if (-limit_y > y)
-				y = -limit_y;
-			if (limit_y < y)
-				y = limit_y;
-
-			x *= 10.0f;
-			y *= 10.0f;
-
-			double roll = roll_ * 0.9 + x * 0.1;
-			double pitch = pitch_ * 0.9 + y * 0.1;
-
-			if (!Double.isNaN(roll)) {
-				roll_ = roll;
-			}
-			if (!Double.isNaN(pitch)) {
-				pitch_ = pitch;
-			}
-
-			listenerLevel.OnChangeLevel(roll_, pitch_);
-		}
+        if(geomagnetic != null && gravity != null){
+            SensorManager.getRotationMatrix(rotationMatrix, null,gravity, geomagnetic);
+            SensorManager.getOrientation(rotationMatrix,attitude);
+            if(listenerLevel!=null){
+//                listenerLevel.OnChangeLevel(getRoll(),getPitch(),getAzimuth());
+                listenerLevel.OnChangeLevel();
+            }
+        }
 	}
+
+    @Override
+    public int getAngle(){
+        return getY()>0?getX():180-getX();
+    }
+
+    private  int getX(){
+        return (int)(gravity[0]* 9);
+    }
+
+    private  int getY(){
+        return (int)(gravity[1]* 9);
+    }
+
+    private  int getZ(){
+        return (int)(gravity[2]* 9);
+    }
 }

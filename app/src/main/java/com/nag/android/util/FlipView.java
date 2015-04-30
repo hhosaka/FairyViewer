@@ -6,10 +6,13 @@ import java.util.TimerTask;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.nag.android.fairyviewer.ShakeManager;
 
 public class FlipView extends ImageView {
 
@@ -30,6 +33,7 @@ public class FlipView extends ImageView {
 
 	public FlipView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+        setScaleType(ScaleType.MATRIX);
 		if (attrs!=null){
 			if(!isInEditMode()){
 				int id = attrs.getAttributeResourceValue(null, ATTR_IMAGES, 0);
@@ -52,6 +56,7 @@ public class FlipView extends ImageView {
 	}
 
 	public void setSource(int id, int interval, boolean loop){
+        stop();
 		this.loop = loop;
 		TypedArray array = getResources().obtainTypedArray(id);
 		drawables = new Drawable[array.length()];
@@ -64,26 +69,25 @@ public class FlipView extends ImageView {
 
 	private void start(int interval){
 		current=0;
-		setImageDrawable(drawables[0]);
+//		setImageDrawable(drawables[0]);
 		timer = new Timer(true);
 		timer.scheduleAtFixedRate(new TimerTask(){
 			@Override
 			public void run() {
-				if (current+1>=drawables.length) {
+				if (current>=drawables.length) {
 					if(loop){
 						current = 0;
-					}else{
-						stop();
-						handler.post(new Runnable(){
-							@Override
-							public void run() {
-								if(listener!=null){
-									listener.onFinish();
-								}
-							}});
-					}
-				}else{
-					++current;
+					}else {
+                        stop();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (listener != null) {
+                                    listener.onFinish();
+                                }
+                            }
+                        });
+                    }
 				}
 				handler.post(new Runnable(){
 					@Override
@@ -100,12 +104,23 @@ public class FlipView extends ImageView {
 		}
 	}
 
+    public void setAngleMeter(AngleMeter meter){
+        this.meter = meter;
+    }
+
+    private Matrix matrix = new Matrix();
+    private AngleMeter meter;
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		if(drawables!=null){
-			setImageDrawable(drawables[current]);
+            if(meter!=null) {
+                matrix.reset();
+                matrix.postRotate(meter.getAngle(), canvas.getWidth() / 2, canvas.getHeight() / 2);
+                setImageMatrix(matrix);
+            }
+			setImageDrawable(drawables[current++]);
 		}
-		
 	}
 }
