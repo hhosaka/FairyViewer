@@ -19,6 +19,7 @@ public class FairyBlueGuy implements Fairy,FlipView.FlipViewListener
 	public void action(Context context, Watch watch, FACTOR factor) {
 		switch(factor){
 			case TAP:
+            case ROTATE:
 				onAction(context, watch);
 				break;
 			case SHAKE:

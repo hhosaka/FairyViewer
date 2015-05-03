@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnShakeListener ,
 														TapManager.OnTapListener
-														,Watch, ShakeManager.OnRotationListener {
+														,Watch {
 	private ShakeManager shakemanager;
 	private TapManager tapmanager;
 	private Fairy fairy;
@@ -21,7 +21,6 @@ public class MainActivity extends Activity implements OnShakeListener ,
 		setContentView(R.layout.activity_main);
 		fairy = new FairyBlueGuy();
 		shakemanager = new ShakeManager(this);
-        shakemanager.setOnLevelListener(this);
 		findViewById(R.id.relativeLayoutMain).setOnTouchListener(new TapManager(this));
         ((FlipView)findViewById(R.id.animationViewFairy)).setAngleMeter(shakemanager);
 	}
@@ -40,11 +39,16 @@ public class MainActivity extends Activity implements OnShakeListener ,
 	}
 
 	@Override
-	public void onShake() {
-		fairy.action(this, this, Fairy.FACTOR.SHAKE);
+	public void onShake(ShakeManager.TYPE type)
+    {
+        switch(type){
+            case SHAKE:
+                fairy.action(this, this, Fairy.FACTOR.SHAKE);
+                break;
+        }
 	}
 
-	@Override
+    @Override
 	public void onTap() {
 		fairy.action(this, this, Fairy.FACTOR.TAP);
 	}
@@ -63,11 +67,4 @@ public class MainActivity extends Activity implements OnShakeListener ,
 	public FlipView getFairyHandView() {
 		return (FlipView)findViewById(R.id.animationViewFairy);
 	}
-
-    @Override
-    public void OnChangeLevel(int roll, int pitch, int azimuth) {
-        ((TextView)findViewById(R.id.textViewRoll)).setText(String.valueOf(roll));
-        ((TextView)findViewById(R.id.textViewPitch)).setText(String.valueOf(pitch));
-        ((TextView)findViewById(R.id.textViewAzimuth)).setText(String.valueOf(azimuth));
-    }
 }

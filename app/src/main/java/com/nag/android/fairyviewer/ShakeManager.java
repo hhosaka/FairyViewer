@@ -9,35 +9,27 @@ import android.content.Context;
 import com.nag.android.util.AngleMeter;
 
 public class ShakeManager implements SensorEventListener, AngleMeter {
+    enum TYPE{SHAKE};
 
 	public interface OnShakeListener {
-		void onShake();
-	}
-
-	public interface OnRotationListener {
-		void OnChangeLevel();
+		void onShake(TYPE type);
 	}
 
 	private static final int FORCE_THRESHOLD = 300;
 	private static final int TIME_THRESHOLD = 100;
 	private static final int SHAKE_TIMEOUT = 500;
 	private static final int SHAKE_DURATION = 100;
-	private static final int SHAKE_COUNT = 2;
+	private static final int SHAKE_COUNT = 3;
 
-	private SensorManager sensormanager;
-//	private float mLastX = -1.0f, lasty = -1.0f, lastz = -1.0f;
-    private float[] prev = new float[3];
-	private long mLastTime;
+    private float[]gravity = new float[3];
+    private long timePrev = 0;
+    private long timeLastShake = 0;
+    private long timeLastForce = 0;
+    private int countShake = 0;
+
+
+    private SensorManager sensormanager;
 	private OnShakeListener listener;
-	//private Context mContext;
-	private int mShakeCount = 0;
-	private long mLastShake;
-	private long mLastForce;
-	private OnRotationListener listenerLevel= null;
-
-	public void setOnLevelListener(OnRotationListener listener){
-		this.listenerLevel = listener;
-	}
 
 	public ShakeManager(OnShakeListener listener) {
 		this.listener = listener;
@@ -45,6 +37,22 @@ public class ShakeManager implements SensorEventListener, AngleMeter {
 
 	@Override
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
+	}
+
+    public void resume(Context context) {
+		sensormanager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+		if (sensormanager == null) {
+			throw new UnsupportedOperationException("Sensor not suported");
+		}
+        sensormanager.registerListener(this, sensormanager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_UI);
+        sensormanager.registerListener(this,sensormanager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),SensorManager.SENSOR_DELAY_UI);
+	}
+
+	public void pause() {
+		if (sensormanager != null) {
+			sensormanager.unregisterListener(this);
+			sensormanager = null;
+		}
 	}
 
     private float sum(float[] values){
@@ -55,84 +63,35 @@ public class ShakeManager implements SensorEventListener, AngleMeter {
         return ret;
     }
 
-	@Override
-	public void onSensorChanged(SensorEvent event) {
-        checkLevel(event);
-        checkShake(event);
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        long now = System.currentTimeMillis();
+        if ((now - timePrev) > TIME_THRESHOLD) {
+            checkShake(event, now);
+            timePrev = now;
+            gravity = event.values.clone();
+        }
     }
 
-    private void checkShake(SensorEvent event) {
+    private void checkShake(SensorEvent event, long now) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            long now = System.currentTimeMillis();
-            if ((now - mLastForce) > SHAKE_TIMEOUT) {
-                mShakeCount = 0;
+            if ((now - timeLastForce) > SHAKE_TIMEOUT) {
+                countShake = 0;
             }
-            if ((now - mLastTime) > TIME_THRESHOLD) {
-                long diff = now - mLastTime;
-                float speed = Math.abs(sum(event.values)-sum(prev)) / diff * 10000;
-                if (speed > FORCE_THRESHOLD) {
-                    if ((++mShakeCount >= SHAKE_COUNT) && now - mLastShake > SHAKE_DURATION) {
-                        mLastShake = now;
-                        mShakeCount = 0;
-                        if (listener != null) {
-                            listener.onShake();
-                        }
+            long diff = now - timePrev;
+            float speed = Math.abs(sum(event.values)-sum(gravity)) / diff * 10000;
+            if (speed > FORCE_THRESHOLD) {
+                if ((++countShake >= SHAKE_COUNT) && now - timeLastShake > SHAKE_DURATION) {
+                    timeLastShake = now;
+                    countShake = 0;
+                    if (listener != null) {
+                        listener.onShake(TYPE.SHAKE);
                     }
-                    mLastForce = now;
                 }
-                mLastTime = now;
-                prev = event.values.clone();
+                timeLastForce = now;
             }
         }
     }
-
-    public void resume(Context context) {
-		sensormanager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-		if (sensormanager == null) {
-			throw new UnsupportedOperationException("Sensor not suported");
-		}
-        sensormanager.registerListener(this, sensormanager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_UI);
-        sensormanager.registerListener(this,sensormanager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),SensorManager.SENSOR_DELAY_UI);
-//		List<Sensor> sensors = sensormanager.getSensorList(Sensor.TYPE_ACCELEROMETER);
-//		if (sensors.size() > 0) {
-//			Sensor s = sensors.get(0);
-//			sensormanager.registerListener(this, s, SensorManager.SENSOR_DELAY_UI);
-//		}
-	}
-
-	public void pause() {
-		if (sensormanager != null) {
-			sensormanager.unregisterListener(this);
-			sensormanager = null;
-		}
-	}
-
-    float[]geomagnetic = null;
-    float[]gravity = null;
-    float[]attitude = new float[3];
-    float[]rotationMatrix = new float[9];
-    private final static double RAD2DEG = 180/Math.PI;
-
-	private void checkLevel(SensorEvent event) {
-
-        switch(event.sensor.getType()){
-            case Sensor.TYPE_MAGNETIC_FIELD:
-                geomagnetic = event.values.clone();
-                break;
-            case Sensor.TYPE_ACCELEROMETER:
-                gravity = event.values.clone();
-                break;
-        }
-
-        if(geomagnetic != null && gravity != null){
-            SensorManager.getRotationMatrix(rotationMatrix, null,gravity, geomagnetic);
-            SensorManager.getOrientation(rotationMatrix,attitude);
-            if(listenerLevel!=null){
-//                listenerLevel.OnChangeLevel(getRoll(),getPitch(),getAzimuth());
-                listenerLevel.OnChangeLevel();
-            }
-        }
-	}
 
     @Override
     public int getAngle(){
@@ -145,9 +104,5 @@ public class ShakeManager implements SensorEventListener, AngleMeter {
 
     private  int getY(){
         return (int)(gravity[1]* 9);
-    }
-
-    private  int getZ(){
-        return (int)(gravity[2]* 9);
     }
 }

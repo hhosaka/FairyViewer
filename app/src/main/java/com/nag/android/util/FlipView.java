@@ -24,12 +24,18 @@ public class FlipView extends ImageView {
 	private boolean loop = true;
 	private Timer timer = null;
 	private Handler handler = new Handler();
+    private Matrix matrix = new Matrix();
+    private AngleMeter meter;
+    private FlipViewListener listener = null;
 
 	public interface FlipViewListener{
 		void onFinish();
 	}
 
-	private FlipViewListener listener = null;
+    public void setAngleMeter(AngleMeter meter){
+        this.meter = meter;
+    }
+
 
 	public FlipView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -69,58 +75,47 @@ public class FlipView extends ImageView {
 
 	private void start(int interval){
 		current=0;
-//		setImageDrawable(drawables[0]);
 		timer = new Timer(true);
 		timer.scheduleAtFixedRate(new TimerTask(){
 			@Override
 			public void run() {
-				if (current>=drawables.length) {
-					if(loop){
-						current = 0;
-					}else {
-                        stop();
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (listener != null) {
-                                    listener.onFinish();
-                                }
+				if (current < drawables.length - 1) {
+                    postDraw();
+                }else if(loop){
+					current = 0;
+                    postDraw();
+				}else {
+                    stop();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (listener != null) {
+                                listener.onFinish();
                             }
-                        });
-                    }
+                        }
+                    });
 				}
-				handler.post(new Runnable(){
-					@Override
-					public void run() {
-						invalidate();
-					}});
 			}}, 0, interval);
 	}
-	
-	public void stop(){
+
+    private void postDraw() {
+        handler.post(new Runnable(){
+            @Override
+            public void run() {
+                Drawable drawable = drawables[current++];
+                if(meter!=null) {
+                    matrix.reset();
+                    matrix.postRotate(meter.getAngle(), drawable.getMinimumWidth() / 2, drawable.getMinimumHeight() / 2);
+                    setImageMatrix(matrix);
+                }
+                setImageDrawable(drawable);
+            }});
+    }
+
+    public void stop(){
 		if(timer!=null){
 			timer.cancel();
 			timer = null;
-		}
-	}
-
-    public void setAngleMeter(AngleMeter meter){
-        this.meter = meter;
-    }
-
-    private Matrix matrix = new Matrix();
-    private AngleMeter meter;
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		if(drawables!=null){
-            if(meter!=null) {
-                matrix.reset();
-                matrix.postRotate(meter.getAngle(), canvas.getWidth() / 2, canvas.getHeight() / 2);
-                setImageMatrix(matrix);
-            }
-			setImageDrawable(drawables[current++]);
 		}
 	}
 }
