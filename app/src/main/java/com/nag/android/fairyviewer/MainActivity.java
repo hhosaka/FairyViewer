@@ -19,8 +19,8 @@ public class MainActivity extends Activity implements OnShakeListener ,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		fairy = new FairyBlueGuy();
 		shakemanager = new ShakeManager(this);
+		fairy = new FairyBlueGuy(shakemanager);
 		findViewById(R.id.relativeLayoutMain).setOnTouchListener(new TapManager(this));
         ((FlipView)findViewById(R.id.animationViewFairy)).setAngleMeter(shakemanager);
 	}
@@ -39,13 +39,14 @@ public class MainActivity extends Activity implements OnShakeListener ,
 	}
 
 	@Override
-	public void onShake(ShakeManager.TYPE type)
+	public void onShake(Fairy.FACTOR factor)
     {
-        switch(type){
-            case SHAKE:
-                fairy.action(this, this, Fairy.FACTOR.SHAKE);
-                break;
-        }
+		fairy.action(this, this, factor);
+//        switch(type){
+//            case SHAKE:
+//                fairy.action(this, this, Fairy.FACTOR.SHAKE);
+//                break;
+//        }
 	}
 
     @Override

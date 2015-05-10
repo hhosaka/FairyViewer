@@ -14,12 +14,17 @@ public class FairyBlueGuy implements Fairy,FlipView.FlipViewListener
 	private static final int INTERVAL = 124;
 	private static final int DURATION=3000;
 	private Watch watch;
+	private ShakeManager shakemanager;
+
+	public FairyBlueGuy(ShakeManager shakemanager) {
+		this.shakemanager = shakemanager;
+	}
 
 	@Override
 	public void action(Context context, Watch watch, FACTOR factor) {
 		switch(factor){
 			case TAP:
-            case ROTATE:
+            case ROLLING:
 				onAction(context, watch);
 				break;
 			case SHAKE:
@@ -50,6 +55,7 @@ public class FairyBlueGuy implements Fairy,FlipView.FlipViewListener
 
 	@Override
 	public void onFinish() {
+		shakemanager.setAngle();
 		watch.getHourHandView().setToNow(DURATION);
 		watch.getMinuteHandView().setToNow(DURATION);
 	}
