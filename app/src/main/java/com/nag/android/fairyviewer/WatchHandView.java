@@ -2,12 +2,14 @@ package com.nag.android.fairyviewer;
 
 import java.util.Random;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.text.format.Time;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 abstract class WatchHandView extends ImageView {
@@ -28,19 +30,34 @@ abstract class WatchHandView extends ImageView {
 
 	protected abstract float getAngle();
 
-	public void random(int duration){
-		move(duration, rand.nextFloat()*720-360.0f);
+	public void random(int duration) {
+		random(duration, null);
 	}
 
-	public void setToNow(int duration){
-		move(duration, getAngle());
+	public void random(int duration, Animator.AnimatorListener listener){
+		move(duration, rand.nextFloat()*720-360.0f, listener);
 	}
 
-	private void move(int duration, float next) {
-		Log.d("H:", "H:current" + current + " next=" + next);
+	public void setToNow(int duration) {
+		setToNow(duration, null);
+	}
+	public void setToNow(int duration, Animator.AnimatorListener listener){
+		move(duration, getAngle(),listener);
+	}
+
+	private float arrange(float current, float next){
+		if(current-next<180 && current-next>-180){
+			return next+360f;
+		}
+		return next;
+	}
+
+	private void move(int duration, float next, Animator.AnimatorListener listener) {
+		//Log.d("H:", "H:current" + current + " next=" + next);
 		ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(this
-				, PropertyValuesHolder.ofFloat("rotation", current, next));
+				, PropertyValuesHolder.ofFloat("rotation", current, arrange(current, next)));
 		objectAnimator.setDuration(duration);
+		if(listener!=null)objectAnimator.addListener(listener);
 		current = next%360;
 		objectAnimator.start();
 	}

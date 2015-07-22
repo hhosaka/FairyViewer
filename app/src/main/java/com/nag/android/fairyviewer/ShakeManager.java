@@ -10,7 +10,8 @@ import com.nag.android.util.AngleMeter;
 
 public class ShakeManager implements SensorEventListener, AngleMeter {
 	public interface OnShakeListener {
-		void onShake(Fairy.FACTOR factor);
+		void onShake();
+        void onRolling();
 	}
 
 	private static final int FORCE_THRESHOLD = 300;
@@ -37,6 +38,7 @@ public class ShakeManager implements SensorEventListener, AngleMeter {
 
 	@Override
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
+        //do nothing
 	}
 
     public void resume(Context context) {
@@ -85,19 +87,19 @@ public class ShakeManager implements SensorEventListener, AngleMeter {
                     timeLastShake = now;
                     countShake = 0;
                     if (listener != null) {
-                        listener.onShake(Fairy.FACTOR.SHAKE);
+                        listener.onShake();
                     }
                 }
                 timeLastForce = now;
             }
 			if(normalizeAngle(prevAngle - getAngle())>ANGLE_THRESHOLD){
 				setAngle();
-				listener.onShake(Fairy.FACTOR.ROLLING);
+				listener.onRolling();
 			}
         }
     }
 
-	public void setAngle(){
+	private void setAngle(){
 		prevAngle = getAngle();
 	}
 
@@ -105,12 +107,10 @@ public class ShakeManager implements SensorEventListener, AngleMeter {
     public int getAngle(){
         return getY()>0?getX():180-getX();
     }
-
 	private int normalizeAngle(int angle){return (angle+360)%360;}
     private  int getX(){
         return (int)(gravity[0]* 9);
     }
-
     private  int getY(){
         return (int)(gravity[1]* 9);
     }

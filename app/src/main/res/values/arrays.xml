@@ -1,37 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<array name="fairy_sample">
-        <item>@drawable/fairy_sample_001_000</item>
-        <item>@drawable/fairy_sample_001_001</item>
-        <item>@drawable/fairy_sample_001_002</item>
-        <item>@drawable/fairy_sample_001_003</item>
-        <item>@drawable/fairy_sample_001_004</item>
-        <item>@drawable/fairy_sample_001_005</item>
-        <item>@drawable/fairy_sample_001_006</item>
-        <item>@drawable/fairy_sample_001_007</item>
-        <item>@drawable/fairy_sample_001_008</item>
-        <item>@drawable/fairy_sample_001_009</item>
-        <item>@drawable/fairy_sample_001_010</item>
-        <item>@drawable/fairy_sample_001_011</item>
-        <item>@drawable/fairy_sample_001_012</item>
-        <item>@drawable/fairy_sample_001_013</item>
-        <item>@drawable/fairy_sample_001_014</item>
-        <item>@drawable/fairy_sample_001_015</item>
+    <array name="fairy_enter">
+        <item>@drawable/fairy001</item>
+        <item>@drawable/fairy002</item>
+        <item>@drawable/fairy003</item>
+        <item>@drawable/fairy004</item>
+        <item>@drawable/fairy005</item>
+        <item>@drawable/fairy006</item>
+        <item>@drawable/fairy007</item>
+        <item>@drawable/fairy008</item>
     </array>
-	<array name="fairy_blueguy_enter">
-        <item>@drawable/fairy_blueguy_enter_000</item>
-        <item>@drawable/fairy_blueguy_enter_001</item>
-        <item>@drawable/fairy_blueguy_enter_002</item>
-        <item>@drawable/fairy_blueguy_enter_003</item>
-        <item>@drawable/fairy_blueguy_enter_004</item>
-        <item>@drawable/fairy_blueguy_enter_005</item>
-        <item>@drawable/fairy_blueguy_enter_006</item>
-        <item>@drawable/fairy_blueguy_enter_007</item>
-        <item>@drawable/fairy_blueguy_enter_008</item>
-        <item>@drawable/fairy_blueguy_enter_009</item>
-        <item>@drawable/fairy_blueguy_enter_010</item>
-        <item>@drawable/fairy_blueguy_enter_011</item>
-        <item>@drawable/fairy_blueguy_enter_012</item>
-        <item>@drawable/fairy_blueguy_enter_013</item>
+    <array name="fairy_windup">
+        <item>@drawable/fairy009</item>
+        <item>@drawable/fairy010</item>
+        <item>@drawable/fairy011</item>
+        <item>@drawable/fairy012</item>
+        <item>@drawable/fairy013</item>
+        <item>@drawable/fairy014</item>
+        <item>@drawable/fairy009</item>
+        <item>@drawable/fairy010</item>
+        <item>@drawable/fairy011</item>
+        <item>@drawable/fairy012</item>
+        <item>@drawable/fairy013</item>
+        <item>@drawable/fairy014</item>
     </array>
+    <array name="fairy_exit">
+        <item>@drawable/fairy015</item>
+        <item>@drawable/fairy016</item>
+        <item>@drawable/fairy017</item>
+        <item>@drawable/fairy018</item>
+        <item>@drawable/fairy019</item>
+        <item>@drawable/fairy020</item>
+        <item>@drawable/fairy021</item>
+    </array>
+    <array name="fairy_bow">
+        <item>@drawable/fairy022</item>
+        <item>@drawable/fairy023</item>
+        <item>@drawable/fairy024</item>
+        <item>@drawable/fairy025</item>
+        <item>@drawable/fairy026</item>
+        <item>@drawable/fairy027</item>
+        <item>@drawable/fairy028</item>
+        <item>@drawable/fairy029</item>
+    </array>
+    <array name="fairy_enter_r">
+        <item>@drawable/fairy101</item>
+        <item>@drawable/fairy102</item>
+        <item>@drawable/fairy103</item>
+        <item>@drawable/fairy104</item>
+        <item>@drawable/fairy105</item>
+        <item>@drawable/fairy106</item>
+        <item>@drawable/fairy107</item>
+        <item>@drawable/fairy108</item>
+    </array>
+    <array name="fairy_windup_r">
+        <item>@drawable/fairy109</item>
+        <item>@drawable/fairy110</item>
+        <item>@drawable/fairy111</item>
+        <item>@drawable/fairy112</item>
+        <item>@drawable/fairy113</item>
+        <item>@drawable/fairy114</item>
+        <item>@drawable/fairy109</item>
+        <item>@drawable/fairy110</item>
+        <item>@drawable/fairy111</item>
+        <item>@drawable/fairy112</item>
+        <item>@drawable/fairy113</item>
+        <item>@drawable/fairy114</item>
+    </array>
+    <array name="fairy_exit_r">
+        <item>@drawable/fairy115</item>
+        <item>@drawable/fairy116</item>
+        <item>@drawable/fairy117</item>
+        <item>@drawable/fairy118</item>
+        <item>@drawable/fairy119</item>
+        <item>@drawable/fairy120</item>
+        <item>@drawable/fairy121</item>
+    </array>
+    <array name="fairy_bow_r">
+        <item>@drawable/fairy122</item>
+        <item>@drawable/fairy123</item>
+        <item>@drawable/fairy124</item>
+        <item>@drawable/fairy125</item>
+        <item>@drawable/fairy126</item>
+        <item>@drawable/fairy127</item>
+        <item>@drawable/fairy128</item>
+        <item>@drawable/fairy129</item>
+    </array>
+
 </resources>

@@ -6,7 +6,6 @@ import com.nag.android.util.FlipView;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnShakeListener ,
 														TapManager.OnTapListener
@@ -20,12 +19,11 @@ public class MainActivity extends Activity implements OnShakeListener ,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		shakemanager = new ShakeManager(this);
-		fairy = new FairyBlueGuy(shakemanager);
+		fairy = new FairyShadowGuy();
 		findViewById(R.id.relativeLayoutMain).setOnTouchListener(new TapManager(this));
         ((FlipView)findViewById(R.id.animationViewFairy)).setAngleMeter(shakemanager);
 	}
 
-    Bitmap b;
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -39,19 +37,20 @@ public class MainActivity extends Activity implements OnShakeListener ,
 	}
 
 	@Override
-	public void onShake(Fairy.FACTOR factor)
+	public void onShake()
     {
-		fairy.action(this, this, factor);
-//        switch(type){
-//            case SHAKE:
-//                fairy.action(this, this, Fairy.FACTOR.SHAKE);
-//                break;
-//        }
+		fairy.onShake(this, this);
 	}
 
-    @Override
+	@Override
+	public void onRolling()
+	{
+		//do nothing
+	}
+
+	@Override
 	public void onTap() {
-		fairy.action(this, this, Fairy.FACTOR.TAP);
+		fairy.onTap(this, this);
 	}
 
 	@Override
@@ -67,5 +66,10 @@ public class MainActivity extends Activity implements OnShakeListener ,
 	@Override
 	public FlipView getFairyHandView() {
 		return (FlipView)findViewById(R.id.animationViewFairy);
+	}
+
+	@Override
+	public void setOnFinishListener(OnFinishListener listener) {
+
 	}
 }

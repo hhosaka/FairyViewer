@@ -25,7 +25,7 @@ class TapManager implements OnTouchListener{
 		case MotionEvent.ACTION_DOWN:
 			long now = System.currentTimeMillis();
 			if(now > prev + TIME_THRESH){
-				count = 0;
+				count = 1;
 			}else{
 				if(++count>=COUNT_THRESH){
 					count = 0;

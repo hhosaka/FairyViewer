@@ -13,15 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="false"
         android:layout_centerVertical="true"
-        android:src="@drawable/dial_ds_0012" />
-
-    <ImageView
-        android:id="@+id/imageViewClockPlate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/dialindex_ds_0023" />
+        android:src="@drawable/plate" />
 
     <com.nag.android.fairyviewer.HourHandView
         android:id="@+id/imageViewHourHand"
@@ -29,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/hourhand_ds_0001" />
+        android:src="@drawable/hour_hand" />
 
     <com.nag.android.fairyviewer.MinuteHandView
         android:id="@+id/imageViewMinuteHand"
@@ -37,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/minutehand_ds_0001" />
+        android:src="@drawable/minute_hand" />
 
     <com.nag.android.util.FlipView
         android:id="@+id/animationViewFairy"

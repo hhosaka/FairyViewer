@@ -36,8 +36,11 @@ public class FlipView extends ImageView {
         this.meter = meter;
     }
 
-
 	public FlipView(Context context, AttributeSet attrs) {
+		this(context, attrs, null);
+	}
+
+	public FlipView(Context context, AttributeSet attrs, FlipViewListener listener) {
 		super(context, attrs);
         setScaleType(ScaleType.MATRIX);
 		if (attrs!=null){
@@ -46,14 +49,10 @@ public class FlipView extends ImageView {
 				if(id!=0){
 					setSource(id,
 							attrs.getAttributeIntValue(null, ATTR_INTERVAL, INTERVAL_DEFAULT),
-							loop);
+							loop, listener);
 				}
 			}
 		}
-	}
-
-	public void setOnFlipViewListener(FlipViewListener listener){
-		this.listener = listener;
 	}
 
 	public void reset(){
@@ -61,9 +60,15 @@ public class FlipView extends ImageView {
 		setImageDrawable(null);
 	}
 
-	public void setSource(int id, int interval, boolean loop){
+	public void setSource(int id, int interval, boolean loop) {
+		setSource(id, interval, loop, null);
+	}
+
+	public void setSource(int id, int interval, boolean loop, FlipViewListener listener){
         stop();
 		this.loop = loop;
+		this.listener = listener;
+		current = 0;
 		TypedArray array = getResources().obtainTypedArray(id);
 		drawables = new Drawable[array.length()];
 		for(int i=0; i<array.length(); ++i){
@@ -113,6 +118,7 @@ public class FlipView extends ImageView {
     }
 
     public void stop(){
+		loop = false;
 		if(timer!=null){
 			timer.cancel();
 			timer = null;

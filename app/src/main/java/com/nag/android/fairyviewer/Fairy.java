@@ -3,7 +3,9 @@ package com.nag.android.fairyviewer;
 import android.content.Context;
 
 public interface Fairy {
-	enum FACTOR{TAP,SHAKE,ROLLING};
-	void action(Context context, Watch watch, FACTOR factor);
-	void onStop();
+//	void action(Context context, Watch watch, FACTOR factor);
+	void onTap(Context context, Watch watch);
+	void onShake(Context context, Watch watch);
+	void onRolling(Context context, Watch watch);
+//	void onStop();
 }
