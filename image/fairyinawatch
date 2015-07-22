@@ -1,0 +1,56 @@
+<!DOCTYPE PencilDocument>
+<document>
+  <editor>
+    <currentLayer value="0" />
+    <currentFrame value="29" />
+    <currentView dx="-477" dy="-460" m21="0" m11="1" m22="1" m12="0" />
+  </editor>
+  <object>
+    <layer visibility="1" type="1" id="1" name="Bitmap Layer" >
+      <image topLeftX="481" topLeftY="277" frame="1" src="001.001.png" />
+      <image topLeftX="448" topLeftY="280" frame="2" src="001.002.png" />
+      <image topLeftX="448" topLeftY="281" frame="3" src="001.003.png" />
+      <image topLeftX="390" topLeftY="278" frame="4" src="001.004.png" />
+      <image topLeftX="330" topLeftY="281" frame="5" src="001.005.png" />
+      <image topLeftX="270" topLeftY="287" frame="6" src="001.006.png" />
+      <image topLeftX="197" topLeftY="289" frame="7" src="001.007.png" />
+      <image topLeftX="154" topLeftY="289" frame="8" src="001.008.png" />
+      <image topLeftX="174" topLeftY="282" frame="9" src="001.009.png" />
+      <image topLeftX="171" topLeftY="275" frame="10" src="001.010.png" />
+      <image topLeftX="174" topLeftY="304" frame="11" src="001.011.png" />
+      <image topLeftX="173" topLeftY="346" frame="12" src="001.012.png" />
+      <image topLeftX="171" topLeftY="345" frame="13" src="001.013.png" />
+      <image topLeftX="170" topLeftY="317" frame="14" src="001.014.png" />
+      <image topLeftX="169" topLeftY="313" frame="15" src="001.015.png" />
+      <image topLeftX="120" topLeftY="313" frame="16" src="001.016.png" />
+      <image topLeftX="83" topLeftY="312" frame="17" src="001.017.png" />
+      <image topLeftX="25" topLeftY="315" frame="18" src="001.018.png" />
+      <image topLeftX="-4" topLeftY="313" frame="19" src="001.019.png" />
+      <image topLeftX="-5" topLeftY="316" frame="20" src="001.020.png" />
+      <image topLeftX="154" topLeftY="289" frame="21" src="001.021.png" />
+      <image topLeftX="196" topLeftY="289" frame="22" src="001.022.png" />
+      <image topLeftX="196" topLeftY="291" frame="23" src="001.023.png" />
+      <image topLeftX="175" topLeftY="313" frame="24" src="001.024.png" />
+      <image topLeftX="181" topLeftY="324" frame="25" src="001.025.png" />
+      <image topLeftX="179" topLeftY="344" frame="26" src="001.026.png" />
+      <image topLeftX="170" topLeftY="343" frame="27" src="001.027.png" />
+      <image topLeftX="170" topLeftY="349" frame="28" src="001.028.png" />
+      <image topLeftX="179" topLeftY="357" frame="29" src="001.029.png" />
+    </layer>
+    <layer visibility="1" type="1" id="2" name="Bitmap Layer" >
+      <image topLeftX="0" topLeftY="0" frame="1" src="002.001.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="2" src="002.002.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="3" src="002.003.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="4" src="002.004.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="5" src="002.005.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="6" src="002.006.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="7" src="002.007.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="8" src="002.008.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="9" src="002.009.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="10" src="002.010.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="11" src="002.011.png" />
+      <image topLeftX="-2" topLeftY="-1" frame="12" src="002.012.png" />
+      <image topLeftX="0" topLeftY="0" frame="13" src="002.013.png" />
+    </layer>
+  </object>
+</document>
