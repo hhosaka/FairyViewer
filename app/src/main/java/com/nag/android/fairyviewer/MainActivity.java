@@ -4,7 +4,6 @@ import com.nag.android.fairyviewer.ShakeManager.OnShakeListener;
 import com.nag.android.util.FlipView;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 public class MainActivity extends Activity implements OnShakeListener ,
@@ -12,14 +11,14 @@ public class MainActivity extends Activity implements OnShakeListener ,
 														,Watch {
 	private ShakeManager shakemanager;
 	private TapManager tapmanager;
-	private Fairy fairy;
+	private Fairy fairy = new FairyShadowGuy() {
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		shakemanager = new ShakeManager(this);
-		fairy = new FairyShadowGuy();
 		findViewById(R.id.relativeLayoutMain).setOnTouchListener(new TapManager(this));
         ((FlipView)findViewById(R.id.animationViewFairy)).setAngleMeter(shakemanager);
 	}
@@ -66,10 +65,5 @@ public class MainActivity extends Activity implements OnShakeListener ,
 	@Override
 	public FlipView getFairyHandView() {
 		return (FlipView)findViewById(R.id.animationViewFairy);
-	}
-
-	@Override
-	public void setOnFinishListener(OnFinishListener listener) {
-
 	}
 }

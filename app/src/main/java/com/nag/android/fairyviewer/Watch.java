@@ -12,5 +12,4 @@ public interface Watch {
 	WatchHandView getHourHandView();
 	WatchHandView getMinuteHandView();
 	FlipView getFairyHandView();
-	void setOnFinishListener(Watch.OnFinishListener listener);
 }
