@@ -7,7 +7,7 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageViewPlate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -15,7 +15,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/plate" />
 
-    <com.nag.android.fairyviewer.HourHandView
+    <com.nag.android.fairyviewerengine.HourHandView
         android:id="@+id/imageViewHourHand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/hour_hand" />
 
-    <com.nag.android.fairyviewer.MinuteHandView
+    <com.nag.android.fairyviewerengine.MinuteHandView
         android:id="@+id/imageViewMinuteHand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,35 +38,5 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textViewRoll"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffffff" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textViewPitch"
-        android:layout_below="@+id/textViewRoll"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffffff" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textViewAzimuth"
-        android:layout_below="@+id/textViewPitch"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffffff" />
 
 </RelativeLayout>

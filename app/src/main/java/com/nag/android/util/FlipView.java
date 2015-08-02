@@ -5,14 +5,11 @@ import java.util.TimerTask;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-
-import com.nag.android.fairyviewer.ShakeManager;
 
 public class FlipView extends ImageView {
 

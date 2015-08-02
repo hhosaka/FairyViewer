@@ -3,11 +3,13 @@ package com.nag.android.fairyviewer;
 import android.animation.Animator;
 import android.content.Context;
 
+import com.nag.android.fairyviewerengine.Fairy;
+import com.nag.android.fairyviewerengine.Watch;
 import com.nag.android.util.FlipView;
 
 import java.util.Random;
 
-public class FairyShadowGuy implements Fairy
+class FairyShadowGuy implements Fairy
 {
 	private static final int INTERVAL = 100;
 	private static final int DURATION=6000;

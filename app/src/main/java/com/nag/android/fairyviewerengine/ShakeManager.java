@@ -1,4 +1,4 @@
-package com.nag.android.fairyviewer;
+package com.nag.android.fairyviewerengine;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

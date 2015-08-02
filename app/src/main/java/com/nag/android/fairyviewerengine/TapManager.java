@@ -1,10 +1,10 @@
-package com.nag.android.fairyviewer;
+package com.nag.android.fairyviewerengine;
 
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-class TapManager implements OnTouchListener{
+public class TapManager implements OnTouchListener{
 
 	private static final int TIME_THRESH = 1000;
 	private static final int COUNT_THRESH = 2;

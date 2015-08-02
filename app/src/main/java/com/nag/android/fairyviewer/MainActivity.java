@@ -1,6 +1,11 @@
 package com.nag.android.fairyviewer;
 
-import com.nag.android.fairyviewer.ShakeManager.OnShakeListener;
+import com.nag.android.fairyviewerengine.ShakeManager;
+import com.nag.android.fairyviewerengine.ShakeManager.OnShakeListener;
+import com.nag.android.fairyviewerengine.Fairy;
+import com.nag.android.fairyviewerengine.TapManager;
+import com.nag.android.fairyviewerengine.Watch;
+import com.nag.android.fairyviewerengine.WatchHandView;
 import com.nag.android.util.FlipView;
 
 import android.app.Activity;
@@ -11,8 +16,7 @@ public class MainActivity extends Activity implements OnShakeListener ,
 														,Watch {
 	private ShakeManager shakemanager;
 	private TapManager tapmanager;
-	private Fairy fairy = new FairyShadowGuy() {
-	};
+	private Fairy fairy = new FairyShadowGuy();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

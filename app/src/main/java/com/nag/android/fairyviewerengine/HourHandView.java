@@ -1,10 +1,12 @@
-package com.nag.android.fairyviewer;
+package com.nag.android.fairyviewerengine;
 
 import android.content.Context;
 import android.text.format.Time;
 import android.util.AttributeSet;
 
-class HourHandView extends WatchHandView {
+import com.nag.android.fairyviewerengine.WatchHandView;
+
+public class HourHandView extends WatchHandView {
 
 	public HourHandView(Context context) {
 		super(context);

@@ -1,4 +1,4 @@
-package com.nag.android.fairyviewer;
+package com.nag.android.fairyviewerengine;
 
 import java.util.Random;
 
@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
-abstract class WatchHandView extends ImageView {
+public abstract class WatchHandView extends ImageView {
 
 	private float current = 0.0f;
 	private Random rand = new Random();

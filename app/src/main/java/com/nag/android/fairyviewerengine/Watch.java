@@ -1,4 +1,4 @@
-package com.nag.android.fairyviewer;
+package com.nag.android.fairyviewerengine;
 
 import com.nag.android.util.FlipView;
 
