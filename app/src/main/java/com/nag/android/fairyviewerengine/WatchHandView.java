@@ -45,6 +45,10 @@ public abstract class WatchHandView extends ImageView {
 		move(duration, getAngle(),listener);
 	}
 
+	public void setDrop(){
+
+	}
+
 	private float arrange(float current, float next){
 		if(current-next<180 && current-next>-180){
 			return next+360f;

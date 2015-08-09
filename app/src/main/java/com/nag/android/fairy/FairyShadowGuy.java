@@ -1,15 +1,16 @@
-package com.nag.android.fairyviewer;
+package com.nag.android.fairy;
 
 import android.animation.Animator;
 import android.content.Context;
 
+import com.nag.android.fairyviewer.R;
 import com.nag.android.fairyviewerengine.Fairy;
 import com.nag.android.fairyviewerengine.Watch;
 import com.nag.android.util.FlipView;
 
 import java.util.Random;
 
-class FairyShadowGuy implements Fairy
+public class FairyShadowGuy implements Fairy
 {
 	private static final int INTERVAL = 100;
 	private static final int DURATION=6000;
@@ -65,6 +66,13 @@ class FairyShadowGuy implements Fairy
 			default:
 				throw new UnsupportedOperationException();
 		}
+	}
+
+	@Override
+	public void init(Context context, Watch watch) {
+		watch.getFairyHandView().reset();
+		watch.getHourHandView().random(0);
+		watch.getMinuteHandView().random(0);
 	}
 
 	@Override

@@ -110,6 +110,7 @@ public class FlipView extends ImageView {
                     matrix.postRotate(meter.getAngle(), drawable.getMinimumWidth() / 2, drawable.getMinimumHeight() / 2);
                     setImageMatrix(matrix);
                 }
+				setScaleType(ScaleType.FIT_CENTER);
                 setImageDrawable(drawable);
             }});
     }

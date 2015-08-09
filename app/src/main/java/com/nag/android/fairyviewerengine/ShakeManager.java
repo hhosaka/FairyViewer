@@ -105,7 +105,7 @@ public class ShakeManager implements SensorEventListener, AngleMeter {
 
     @Override
     public int getAngle(){
-        return getY()>0?getX():180-getX();
+        return getY()>=0?getX():180-getX();
     }
 	private int normalizeAngle(int angle){return (angle+360)%360;}
     private  int getX(){

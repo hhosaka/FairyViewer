@@ -1,11 +1,13 @@
 package com.nag.android.fairyviewer;
 
+import com.nag.android.fairy.FairyShadowGuy;
 import com.nag.android.fairyviewerengine.ShakeManager;
 import com.nag.android.fairyviewerengine.ShakeManager.OnShakeListener;
 import com.nag.android.fairyviewerengine.Fairy;
 import com.nag.android.fairyviewerengine.TapManager;
 import com.nag.android.fairyviewerengine.Watch;
 import com.nag.android.fairyviewerengine.WatchHandView;
+import com.nag.android.util.AngleMeter;
 import com.nag.android.util.FlipView;
 
 import android.app.Activity;
@@ -25,6 +27,7 @@ public class MainActivity extends Activity implements OnShakeListener ,
 		shakemanager = new ShakeManager(this);
 		findViewById(R.id.relativeLayoutMain).setOnTouchListener(new TapManager(this));
         ((FlipView)findViewById(R.id.animationViewFairy)).setAngleMeter(shakemanager);
+		fairy.init(this, this);
 	}
 
 	@Override
